@@ -1,1 +1,86 @@
 
+import java.util.*;
+
+abstract class Employee {
+    private int employeeId;
+    private String employeeName;
+
+    Employee(int employeeId, String employeeName) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+    }
+
+    int getEmployeeId() {
+        return employeeId;
+    }
+
+    String getEmployeeName() {
+        return employeeName;
+    }
+
+    abstract double calculateSalary();
+}
+
+class FullTimeEmployee extends Employee {
+    double monthlySalary;
+
+    FullTimeEmployee(int employeeId, String employeeName, double monthlySalary) {
+        super(employeeId, employeeName);
+        this.monthlySalary = monthlySalary;
+    }
+
+    @Override
+    double calculateSalary() {
+        return monthlySalary;
+    }
+}
+
+class ContractEmployee extends Employee {
+    int workingDays;
+    double dailyRate;
+
+    ContractEmployee(int employeeId, String employeeName,
+                     int workingDays, double dailyRate) {
+        super(employeeId, employeeName);
+        this.workingDays = workingDays;
+        this.dailyRate = dailyRate;
+    }
+
+    @Override
+    double calculateSalary() {
+        return workingDays * dailyRate;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int employeeType = sc.nextInt();
+        int employeeId = sc.nextInt();
+        String employeeName = sc.next();
+
+        Employee e;
+
+        if (employeeType == 1) {
+            double monthlySalary = sc.nextDouble();
+
+            e = new FullTimeEmployee(
+                employeeId, employeeName, monthlySalary
+            );
+        } else {
+            int workingDays = sc.nextInt();
+            double dailyRate = sc.nextDouble();
+
+            e = new ContractEmployee(
+                employeeId, employeeName, workingDays, dailyRate
+            );
+        }
+
+        System.out.println("Employee ID: " + e.getEmployeeId());
+        System.out.println("Employee Name: " + e.getEmployeeName());
+        System.out.printf("Salary: %.2f%n", e.calculateSalary());
+
+        sc.close();
+    }
+}
